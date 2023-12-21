@@ -1,5 +1,7 @@
 package com.watchlist.WatchList.controller;
 
+import com.watchlist.WatchList.dto.CreateWatchItemDto;
+import com.watchlist.WatchList.model.User;
 import com.watchlist.WatchList.model.WatchItem;
 import com.watchlist.WatchList.service.WatchItemService;
 import lombok.AllArgsConstructor;
@@ -13,8 +15,8 @@ import java.util.List;
 public class WatchListController {
     private WatchItemService watchItemService;
     @PostMapping
-    public WatchItem addWatchItem(@RequestBody WatchItem watchItem) {
-        return this.watchItemService.create(watchItem);
+    public WatchItem addWatchItem(@RequestBody CreateWatchItemDto createWatchItem) {
+        return this.watchItemService.create(createWatchItem);
     }
 
     @DeleteMapping("/{id}")

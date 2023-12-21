@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import org.hibernate.annotations.UuidGenerator;
+import java.util.List;
 
 @Data
 @Entity
@@ -18,11 +19,11 @@ public class User {
     @Column(unique = true)
     private String login;
     private String password;
-
-    // todo: icon picture;
-    // todo: one-to-many User - WatchItem
+    @OneToMany(mappedBy = "user")
+    private List<WatchItem> watchItems;
 }
 
 // todo: Suggested features:
+//          -- Icons;
 //          -- Share user's WatchList with other users. Also mb generate QR / URL;
 //          -- Change visual app style.

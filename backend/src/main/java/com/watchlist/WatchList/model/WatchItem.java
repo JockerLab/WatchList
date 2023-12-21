@@ -1,9 +1,7 @@
 package com.watchlist.WatchList.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NonNull;
 
@@ -18,10 +16,11 @@ public class WatchItem {
     private Long id;
     private String name; // todo: not null
     private boolean isViewed; // todo: default false
-    private int nextEpisode; // todo: default 1
+    private int episode; // todo: default 1
     private int season; // todo: default 1
     private LocalDate nextEpisodeDate;
-
-    // todo: type (ex. movie, anime, series...);
-    // todo: many-to-one WatchItem - User
+    @ManyToOne
+    @JsonIgnore
+    private User user;
 }
+// todo: Now only series. Add type (ex. movie, series, ...);

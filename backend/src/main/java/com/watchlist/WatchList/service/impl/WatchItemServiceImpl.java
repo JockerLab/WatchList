@@ -1,6 +1,9 @@
 package com.watchlist.WatchList.service.impl;
 
+import com.watchlist.WatchList.dto.CreateWatchItemDto;
+import com.watchlist.WatchList.model.User;
 import com.watchlist.WatchList.model.WatchItem;
+import com.watchlist.WatchList.repository.UserRepository;
 import com.watchlist.WatchList.repository.WatchItemRepository;
 import com.watchlist.WatchList.service.WatchItemService;
 import lombok.AllArgsConstructor;
@@ -12,9 +15,19 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class WatchItemServiceImpl implements WatchItemService {
+    private UserRepository users;
     private WatchItemRepository watchItems;
     @Override
-    public WatchItem create(WatchItem watchItem) {
+    public WatchItem create(CreateWatchItemDto createWatchItem) {
+        User user = this.users.findByLogin(createWatchItem.getUserLogin());
+        WatchItem watchItem = new WatchItem();
+        // todo: refactor?
+        watchItem.setSeason(createWatchItem.getSeason());
+        watchItem.setViewed(createWatchItem.isViewed());
+        watchItem.setNextEpisodeDate(createWatchItem.getNextEpisodeDate());
+        watchItem.setEpisode(createWatchItem.getEpisode());
+        watchItem.setName(createWatchItem.getName());
+        watchItem.setUser(user);
         return this.watchItems.save(watchItem);
     }
 
@@ -28,7 +41,7 @@ public class WatchItemServiceImpl implements WatchItemService {
         currentWatchItem.setName(watchItem.getName());
         currentWatchItem.setSeason(watchItem.getSeason());
         currentWatchItem.setViewed(watchItem.isViewed());
-        currentWatchItem.setNextEpisode(watchItem.getNextEpisode());
+        currentWatchItem.setEpisode(watchItem.getEpisode());
         currentWatchItem.setNextEpisodeDate(watchItem.getNextEpisodeDate());
 
         return this.watchItems.save(currentWatchItem);
@@ -42,7 +55,7 @@ public class WatchItemServiceImpl implements WatchItemService {
 
     @Override
     public List<WatchItem> findAllByLogin(String login) {
-        // todo: login
-        return this.watchItems.findAll();
+        User user = this.users.findByLogin(login);
+        return this.watchItems.findAllByUser(user);
     }
 }
